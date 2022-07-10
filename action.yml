@@ -4,9 +4,9 @@ branding:
   icon: "heart"
   color: "gray-dark"
 inputs:
-  font-file:
+  font-path:
     description: |
-      Font file
+      Font path
       Would be used in font coverage tests
     required: false
   language-folder:
@@ -54,18 +54,18 @@ runs:
           print("No syntax error found.")
         end
     - name: Prepare FontTools
-      if: "${{ inputs.font-file != '' && inputs.language-folder != ''}}"
+      if: "${{ inputs.font-path != '' && inputs.language-folder != ''}}"
       shell: bash
       run: |
         pip install fonttools
     - name: Check all characters are in the font
-      if: "${{ inputs.font-file != '' && inputs.language-folder != ''}}"
+      if: "${{ inputs.font-path != '' && inputs.language-folder != ''}}"
       shell: python3 {0}
       run: |
         from fontTools.ttLib import TTFont
         from pathlib import Path
 
-        font = TTFont("${{ inputs.font-file }}")
+        font = TTFont("${{ inputs.font-path }}")
         keys = set(font.getBestCmap().keys())
 
         missing = []
