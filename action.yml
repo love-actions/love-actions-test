@@ -1,5 +1,8 @@
 name: Love actions for testing
 description: Automatic tests for LÖVE based games
+branding:
+  icon: "heart"
+  color: "gray-dark"
 inputs:
   font-file:
     description: |
