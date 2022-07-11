@@ -9,10 +9,15 @@ Github Action for auto testing sources and logics of a [LÖVE](https://love2d.or
 See related actions below:
 
 [Love actions bare package](https://github.com/marketplace/actions/love-actions-bare-package)
+
 [Love actions for android](https://github.com/marketplace/actions/love-actions-for-android)
+
 [Love actions for iOS](https://github.com/marketplace/actions/love-actions-for-ios)
+
 [Love actions for Linux](https://github.com/marketplace/actions/love-actions-for-linux)
+
 [Love actions for macOS](https://github.com/marketplace/actions/love-actions-for-macos)
+
 [Love actions for Windows](https://github.com/marketplace/actions/love-actions-for-windows)
 
 ## Quick example
