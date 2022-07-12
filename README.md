@@ -36,7 +36,7 @@ See related actions below:
 
 | Name              | Required | Default         | Description                                                  |
 | :---------------- | -------- | --------------- | ------------------------------------------------------------ |
-| `font-file`       | `false`  | `""`            | App main font file, would skip font coverage tests if not specified |
-| `language-folder` | `false`  | `""`            | App language folder, would skip font coverage tests if not specified |
+| `font-file`       | `false`  | `""`            | App main font file. Would skip font coverage tests if not specified |
+| `language-folder` | `false`  | `""`            | App language folder. Would skip font coverage tests if not specified |
 | `love-package`    | `false`  | `"./game.love"` | `.love` game package file path                               |
-| `source-folder`   | `false`  | `"."`           | App source codes folder, used in grammar checks              |
+| `source-folder`   | `false`  | `"."`           | App source codes folder. Used in grammar checks              |
