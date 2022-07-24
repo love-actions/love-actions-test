@@ -86,7 +86,7 @@ runs:
           for char, file, i in missing:
             print(f"'{char}'({ord(char):x}) in {file} at line {i} " \
                   f"(${{ github.server_url }}/${{ github.repository }}/blob/${{ github.sha }}/{file}#L{i})")
-          if ${{ inputs.strict }} == "true":
+          if "${{ inputs.strict }}" == "true":
             exit(1)
         else:
           print("All characters are present in the font.")
