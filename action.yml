@@ -26,6 +26,12 @@ inputs:
       Would be used to check grammar errors
     required: false
     default: "."
+  strict:
+    description: |
+      Strict mode
+      Would fail the tests if font coverage is not 100%
+    required: false
+    default: "false"
 runs:
   using: "composite"
   steps:
@@ -80,7 +86,8 @@ runs:
           for char, file, i in missing:
             print(f"'{char}'({ord(char):x}) in {file} at line {i} " \
                   f"(${{ github.server_url }}/${{ github.repository }}/blob/${{ github.sha }}/{file}#L{i})")
-          exit(1)
+          if ${{ inputs.strict }} == "true":
+            exit(1)
         else:
           print("All characters are present in the font.")
   # - uses: ./.github/actions/build-love

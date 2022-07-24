@@ -32,13 +32,15 @@ See related actions below:
     language-folder: "./assets/language"
     love-package: "./game.love"
     source-folder: "."
+    strict: "true"
 ```
 
 ## All inputs
 
-| Name              | Required | Default         | Description                                                  |
-| :---------------- | -------- | --------------- | ------------------------------------------------------------ |
-| `font-file`       | `false`  | `""`            | App main font file. Would skip font coverage tests if not specified |
+| Name              | Required | Default         | Description                                                          |
+| :---------------- | -------- | --------------- | -------------------------------------------------------------------- |
+| `font-file`       | `false`  | `""`            | App main font file. Would skip font coverage tests if not specified  |
 | `language-folder` | `false`  | `""`            | App language folder. Would skip font coverage tests if not specified |
-| `love-package`    | `false`  | `"./game.love"` | `.love` game package file path                               |
-| `source-folder`   | `false`  | `"."`           | App source codes folder. Used in grammar checks              |
+| `love-package`    | `false`  | `"./game.love"` | `.love` game package file path                                       |
+| `source-folder`   | `false`  | `"."`           | App source codes folder. Used in grammar checks                      |
+| `strict`          | `false`  | `"false"`           | Strict mode. Fail the tests if font coverage is not 100%         |
