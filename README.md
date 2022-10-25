@@ -26,7 +26,7 @@ See related actions below:
 
 ```yaml
 - name: Build bare love package
-  uses: 26F-Studio/love-actions-test@main
+  uses: love-action/love-actions-test@v1
   with:
     font-file: "./assets/fonts/proportional.otf"
     language-folder: "./assets/language"
@@ -37,10 +37,10 @@ See related actions below:
 
 ## All inputs
 
-| Name              | Required | Default         | Description                                                          |
-| :---------------- | -------- | --------------- | -------------------------------------------------------------------- |
-| `font-file`       | `false`  | `""`            | App main font file. Would skip font coverage tests if not specified  |
-| `language-folder` | `false`  | `""`            | App language folder. Would skip font coverage tests if not specified |
-| `love-package`    | `false`  | `"./game.love"` | `.love` game package file path                                       |
-| `source-folder`   | `false`  | `"."`           | App source codes folder. Used in grammar checks                      |
-| `strict`          | `false`  | `"false"`           | Strict mode. Fail the tests if font coverage is not 100%         |
+| Name                | Required  | Default           | Description                                                          |
+| :------------------ | --------- | ----------------- | -------------------------------------------------------------------- |
+| `font-file`       | `false` | `""`            | App main font file. Would skip font coverage tests if not specified  |
+| `language-folder` | `false` | `""`            | App language folder. Would skip font coverage tests if not specified |
+| `love-package`    | `false` | `"./game.love"` | `.love` game package file path                                     |
+| `source-folder`   | `false` | `"."`           | App source codes folder. Used in grammar checks                      |
+| `strict`          | `false` | `"false"`       | Strict mode. Fail the tests if font coverage is not 100%             |
