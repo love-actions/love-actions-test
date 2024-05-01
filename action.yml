@@ -1,111 +1,113 @@
+# @format
+
 name: Love actions for testing
 description: Automatic tests for LÖVE based games
 branding:
-  icon: "heart"
-  color: "gray-dark"
+    icon: 'heart'
+    color: 'gray-dark'
 inputs:
-  font-path:
-    description: |
-      Font path
-      Would be used in font coverage tests
-    required: false
-  language-folder:
-    description: |
-      Path to the language folder
-      Would be used in font coverage tests
-    required: false
-  love-package:
-    description: |
-      Love package
-      Would be used for gaming logic tests
-    required: false
-    default: "./game.love"
-  source-folder:
-    description: |
-      Top folder of the game sources
-      Would be used to check grammar errors
-    required: false
-    default: "."
-  strict:
-    description: |
-      Strict mode
-      Would fail the tests if font coverage is not 100%
-    required: false
-    default: "false"
+    font-path:
+        description: |
+            Font path
+            Would be used in font coverage tests
+        required: false
+    language-folder:
+        description: |
+            Path to the language folder
+            Would be used in font coverage tests
+        required: false
+    love-package:
+        description: |
+            Love package
+            Would be used for gaming logic tests
+        required: false
+        default: './game.love'
+    source-folder:
+        description: |
+            Top folder of the game sources
+            Would be used to check grammar errors
+        required: false
+        default: '.'
+    strict:
+        description: |
+            Strict mode
+            Would fail the tests if font coverage is not 100%
+        required: false
+        default: 'false'
 runs:
-  using: "composite"
-  steps:
-    - name: Install lua
-      shell: bash
-      run: |
-        sudo apt-get install lua5.3 -y
-    - name: Check all lua files are valid
-      shell: lua {0}
-      run: |
-        local files = assert(io.popen "find ${{ inputs.source-folder }} -name '*.lua' -not -path '*/.git/*'")
-        local errors = 0
-        for file in files:lines() do
-          local f, error = loadfile(file)
-          if not f then
-            print(error)
-            errors = errors + 1
-          end
-        end
-        files:close()
+    using: 'composite'
+    steps:
+        - name: Install luajit
+          shell: bash
+          run: |
+              sudo apt-get install luajit -y
+        - name: Check all lua files are valid
+          shell: luajit {0}
+          run: |
+              local files = assert(io.popen "find ${{ inputs.source-folder }} -name '*.lua' -not -path '*/.git/*'")
+              local errors = 0
+              for file in files:lines() do
+                local f, error = loadfile(file)
+                if not f then
+                  print(error)
+                  errors = errors + 1
+                end
+              end
+              files:close()
 
-        if errors > 0 then
-          print(("%d syntax error(s) found."):format(errors))
-          os.exit(1)
-        else
-          print("No syntax error found.")
-        end
-    - name: Prepare FontTools
-      if: "${{ inputs.font-path != '' && inputs.language-folder != ''}}"
-      shell: bash
-      run: |
-        pip install fonttools
-    - name: Check all characters are in the font
-      if: "${{ inputs.font-path != '' && inputs.language-folder != ''}}"
-      shell: python3 {0}
-      run: |
-        from fontTools.ttLib import TTFont
-        from pathlib import Path
+              if errors > 0 then
+                print(("%d syntax error(s) found."):format(errors))
+                os.exit(1)
+              else
+                print("No syntax error found.")
+              end
+        - name: Prepare FontTools
+          if: "${{ inputs.font-path != '' && inputs.language-folder != ''}}"
+          shell: bash
+          run: |
+              pip install fonttools
+        - name: Check all characters are in the font
+          if: "${{ inputs.font-path != '' && inputs.language-folder != ''}}"
+          shell: python3 {0}
+          run: |
+              from fontTools.ttLib import TTFont
+              from pathlib import Path
 
-        font = TTFont("${{ inputs.font-path }}")
-        keys = set(font.getBestCmap().keys())
+              font = TTFont("${{ inputs.font-path }}")
+              keys = set(font.getBestCmap().keys())
 
-        missing = []
-        for file in Path("${{ inputs.language-folder }}").glob("*.lua"):
-          for i, line in enumerate(file.read_text().splitlines()):
-            for char in line:
-              if ord(char) not in keys:
-                missing.append((char, file, i+1))
+              missing = []
+              for file in Path("${{ inputs.language-folder }}").glob("*.lua"):
+                for i, line in enumerate(file.read_text().splitlines()):
+                  for char in line:
+                    if ord(char) not in keys:
+                      missing.append((char, file, i+1))
 
-        if missing:
-          print("Missing characters:")
-          for char, file, i in missing:
-            print(f"'{char}'({ord(char):x}) in {file} at line {i} " \
-                  f"(${{ github.server_url }}/${{ github.repository }}/blob/${{ github.sha }}/{file}#L{i})")
-          if "${{ inputs.strict }}" == "true":
-            exit(1)
-        else:
-          print("All characters are present in the font.")
-  # - uses: ./.github/actions/build-love
-  # - name: Download love
-  #   shell: bash
-  #   run: |
-  #     curl -L --retry 5 https://github.com/love2d/love/releases/download/11.4/love-11.4-x86_64.AppImage
-  # - name: Extract love
-  #   shell: bash
-  #   run: |
-  #     ./love-11.4-x86_64.AppImage --appimage-extract
-  # - name: Prepare PulseAudio
-  #   shell: bash
-  #   run: |
-  #     sudo apt-get update
-  #     sudo apt-get install pulseaudio pulseaudio-utils pavucontrol alsa-oss alsa-utils -y
-  # - name: Run automated test
-  #   uses: GabrielBB/xvfb-action@v1
-  #   with:
-  #     run: |
-  #       ./squashfs-root/bin/love Techmino_Galaxy.love --test
+              if missing:
+                print("Missing characters:")
+                for char, file, i in missing:
+                  print(f"'{char}'({ord(char):x}) in {file} at line {i} " \
+                        f"(${{ github.server_url }}/${{ github.repository }}/blob/${{ github.sha }}/{file}#L{i})")
+                if "${{ inputs.strict }}" == "true":
+                  exit(1)
+              else:
+                print("All characters are present in the font.")
+    # - uses: ./.github/actions/build-love
+    # - name: Download love
+    #   shell: bash
+    #   run: |
+    #     curl -L --retry 5 https://github.com/love2d/love/releases/download/11.4/love-11.4-x86_64.AppImage
+    # - name: Extract love
+    #   shell: bash
+    #   run: |
+    #     ./love-11.4-x86_64.AppImage --appimage-extract
+    # - name: Prepare PulseAudio
+    #   shell: bash
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install pulseaudio pulseaudio-utils pavucontrol alsa-oss alsa-utils -y
+    # - name: Run automated test
+    #   uses: GabrielBB/xvfb-action@v1
+    #   with:
+    #     run: |
+    #       ./squashfs-root/bin/love Techmino_Galaxy.love --test
