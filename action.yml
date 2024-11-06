@@ -35,12 +35,12 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Install lua
+    - name: Install luajit
       shell: bash
       run: |
-        sudo apt-get install lua5.3 -y
+        sudo apt-get install luajit -y
     - name: Check all lua files are valid
-      shell: lua {0}
+      shell: luajit {0}
       run: |
         local files = assert(io.popen "find ${{ inputs.source-folder }} -name '*.lua' -not -path '*/.git/*'")
         local errors = 0
@@ -90,22 +90,3 @@ runs:
             exit(1)
         else:
           print("All characters are present in the font.")
-  # - uses: ./.github/actions/build-love
-  # - name: Download love
-  #   shell: bash
-  #   run: |
-  #     curl -L --retry 5 https://github.com/love2d/love/releases/download/11.4/love-11.4-x86_64.AppImage
-  # - name: Extract love
-  #   shell: bash
-  #   run: |
-  #     ./love-11.4-x86_64.AppImage --appimage-extract
-  # - name: Prepare PulseAudio
-  #   shell: bash
-  #   run: |
-  #     sudo apt-get update
-  #     sudo apt-get install pulseaudio pulseaudio-utils pavucontrol alsa-oss alsa-utils -y
-  # - name: Run automated test
-  #   uses: GabrielBB/xvfb-action@v1
-  #   with:
-  #     run: |
-  #       ./squashfs-root/bin/love Techmino_Galaxy.love --test
